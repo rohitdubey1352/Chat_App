@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Chat</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1 class="main_heading">WebSocket <span>Chat</span></h1>
+
+    <div id="chat-container">
+        <div class="heading">
+            <h3>Simple <span>Chat</span> App</h3>
+            <p>Write your thoughts in the <span>message</span> box</p>
+            <hr>
+        </div>
+
+        <div id="chat" class="message_part"></div>
+        
+        <div id="message_box">
+            <input id="message-input" type="text" placeholder="Type your message..." />
+            <button onclick="sendMessage()" id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const ws = new WebSocket("ws://localhost:3000");
+
+        ws.addEventListener("message", function(event) {
+            const data = JSON.parse(event.data);
+
+            if (data.type === "message") {
+                addMessage(data.sender, data.data);
+            }
+        });
+
+        function sendMessage() {
+            const message = document.getElementById("message-input").value; // Fixed ID here
+
+            if (!message) return false;
+
+            ws.send(JSON.stringify({ type: "message", data: message, sender: "You" }));
+
+            addMessage("You", message);
+            document.getElementById("message-input").value = ""; // Fixed ID here
+        }
+
+
+        function addMessage(sender, message) {
+            const node = document.createElement("P");
+            const text = document.createTextNode(`${sender === 'You' ? 'You' : 'Robot'}: ${message}`);
+
+            node.appendChild(text);
+            node.classList.add("message_part");
+
+            document.getElementById("chat").appendChild(node);
+        }
+    </script>
+
+</body>
+</html>
