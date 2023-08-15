@@ -8,7 +8,7 @@ In this Chat App, you need to have these software:
 After installation, download the zip file for this project from clicking on code dropdown button.
 Then, open in your editor like VS Code and then use this command to install properly all nesseccery files and libaries.
 
-**For neccessary libraries**
+**For neccessary libraries**/
 **npm install**
 
 **For Scripts**
